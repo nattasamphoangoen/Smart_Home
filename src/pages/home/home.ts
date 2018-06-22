@@ -13,7 +13,7 @@ export class HomePage {
   public led2=0;
   public M=0;
   public time=0;
-  public time1="";
+  public time1='';
 
   constructor(public navCtrl: NavController,  private db: AngularFireDatabase) {
     this.db.object('Home1/board1').valueChanges().subscribe(data=>{
@@ -25,7 +25,10 @@ export class HomePage {
     this.time = data['segment'];
     console.log(data['segment']);
  });
-  }
+
+
+
+}
 
   led1Switch(){
     console.log(this.led1);
