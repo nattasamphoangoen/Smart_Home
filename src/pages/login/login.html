@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>SmartHome-Login</ion-title>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-card>
+    
+      <ion-card-header>
+        Login to Home
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-list>
+    
+          <ion-item>
+            <ion-input [(ngModel)]="user1" placeholder="Username"></ion-input>
+          </ion-item>
+        
+          <ion-item>
+            <ion-input [(ngModel)]="pass1" type="password" placeholder="Password"></ion-input>
+          </ion-item>
+          <button ion-button round (click)="showAlert(event, item)">Login
+          </button>
+    
+        </ion-list>
+      </ion-card-content>
+    
+    
+    </ion-card>
+    </ion-content>
