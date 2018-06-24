@@ -64,7 +64,7 @@ console.log(data['pass']);
 
     }
     
-  showAlert(item1, item) {
+  showAlert(item1, item, item3) {
       if((this.user == this.user1 && this.pass1 == this.pass)){
         this.navCtrl.push(HomePage, {
             item: item
@@ -75,7 +75,7 @@ console.log(data['pass']);
               });
         }else if((this.user3 == this.user1 && this.pass1 == this.pass3)){
           this.navCtrl.push(HomePage3, {
-            item1: item1
+            item3: item3
           });
         }else{
             const alert = this.alertCtrl.create({
