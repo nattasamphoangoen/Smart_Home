@@ -10,7 +10,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { Login } from '../pages/login/login';
-
+import { HomePage2 } from '../pages/home2/home2';
+import { HomePage3 } from '../pages/home3/home3';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,7 +21,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MyApp,
     HomePage,
-    Login
+    Login,
+    HomePage2,
+    HomePage3
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyApp,
     HomePage,
-    Login
+    Login,
+    HomePage2,
+    HomePage3
   ],
   providers: [
     StatusBar,
