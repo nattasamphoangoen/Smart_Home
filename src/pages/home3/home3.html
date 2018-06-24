@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>SmartHome</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-item>
+        <ion-label>Temperature =  {{temp}}</ion-label>
+      <ion-range min="0" max="100" [(ngModel)]="temp" color="danger">
+        <ion-icon range-left small color="danger" name="thermometer"></ion-icon>
+        <ion-icon range-right color="danger" name="thermometer"></ion-icon>
+      </ion-range>
+    </ion-item>
+  
+  
+    <ion-item>
+      <ion-label>Mode Time</ion-label>
+      <ion-toggle [(ngModel)]="M" (ionChange)="MM()"></ion-toggle>
+    </ion-item>
+  
+  
+    <ion-card>
+      <ion-item>
+        Time = {{time}}
+      </ion-item>
+    </ion-card>
+  
+    <ion-list inset>
+  
+      <ion-item>
+        <ion-label stacked>Username</ion-label>
+        <ion-input [(ngModel)]="time1" ></ion-input>
+      </ion-item>
+      <button ion-button icon-end (click)="timer()" (ionChange)="timer()">
+        Set
+      </button>
+    </ion-list>
+  
+    
+  </ion-content>
+  
+  
+  
+  
