@@ -64,14 +64,14 @@ console.log(data['pass']);
 
     }
     
-  showAlert(item1, item, item3) {
+  showAlert(item2, item, item3) {
       if((this.user == this.user1 && this.pass1 == this.pass)){
         this.navCtrl.push(HomePage, {
             item: item
           });
         }else if((this.user2 == this.user1 && this.pass1 == this.pass2)){
             this.navCtrl.push(HomePage2, {
-                item1: item1
+                item2: item2
               });
         }else if((this.user3 == this.user1 && this.pass1 == this.pass3)){
           this.navCtrl.push(HomePage3, {
