@@ -12,7 +12,7 @@ import { HomePage } from '../pages/home/home';
 import { Login } from '../pages/login/login';
 import { HomePage2 } from '../pages/home2/home2';
 import { HomePage3 } from '../pages/home3/home3';
-
+import { HomePage4 } from '../pages/home4/home4';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -23,7 +23,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     Login,
     HomePage2,
-    HomePage3
+    HomePage3,
+    HomePage4
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     Login,
     HomePage2,
-    HomePage3
+    HomePage3,
+    HomePage4
   ],
   providers: [
     StatusBar,
