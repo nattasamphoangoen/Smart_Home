@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>SmartHome</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-item>
+      <ion-label>LED1</ion-label>
+      <ion-toggle [(ngModel)]="led1" (ionChange)="led1Switch()"></ion-toggle>
+    </ion-item>
+     
+  </ion-content>
+  
+  
+  
