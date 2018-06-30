@@ -13,6 +13,8 @@
 #define DHTPIN D4
 #define DHTTYPE DHT11
 #define LED0 D3
+#define l2ed1 D0
+#define l2ed2 D8
 int c0, c1, c2, c3, u, u1, t3, t2, t1, t0;
 DHT dht(DHTPIN, DHTTYPE);
 int timezone = 7 * 3600;
@@ -26,7 +28,8 @@ void setup()
 {
 
   Serial.setDebugOutput(true);
-
+  pinMode(l2ed1, OUTPUT);
+  pinMode(l2ed2, OUTPUT);
   dht.begin();
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
@@ -63,93 +66,210 @@ void setup()
 
 void loop()
 {
+
   float h = dht.readHumidity();
   float t = dht.readTemperature();
 
   time_t now = time(nullptr);
   struct tm* p_tm = localtime(&now);
-  String clk1 = Firebase.getString("Home1/board1/Clock/segment");
-  float clk = clk1.toFloat();
-  bool k = Firebase.getBool("Home1/board1/Clock/M");
-  Serial.print("Clock : ");
-  Serial.println(clk1);
-  Serial.println(clk);
+  String user = Firebase.getString("usertest/user");
+  int pass = Firebase.getInt("usertest/pass");
 
-  Serial.print(p_tm->tm_hour);
-  Serial.print(":");
-  Serial.print(p_tm->tm_min);
-  Serial.print(":");
-  Serial.print(p_tm->tm_sec);
-  Serial.println("");
-  if (Firebase.getBool("Home1/board1/led/led1") == true) {
-    digitalWrite(led1, HIGH);
-    Serial.print("LEDTEST : ");
-    Serial.println(Firebase.getBool("Home1/board1/led/led1"));
-  }else{
+  if (user == "Home1" && pass == 1111) {
+    String clk1 = Firebase.getString("Home1/board1/Clock/segment");
+    float clk = clk1.toFloat();
+    bool k = Firebase.getBool("Home1/board1/Clock/M");
+    Serial.print("Clock : ");
+    Serial.println(clk1);
+    Serial.println(clk);
+
+    Serial.print(p_tm->tm_hour);
+    Serial.print(":");
+    Serial.print(p_tm->tm_min);
+    Serial.print(":");
+    Serial.print(p_tm->tm_sec);
+    Serial.println("");
+    if (Firebase.getBool("Home1/board1/led/led1") == true) {
+      digitalWrite(led1, HIGH);
+      Serial.print("LEDTEST : ");
+      Serial.println(Firebase.getBool("Home1/board1/led/led1"));
+    } else {
+      digitalWrite(led1, LOW);
+    }
+    if (Firebase.getBool("Home1/board1/led/LED2") == true) {
+      digitalWrite(led2, HIGH);
+      Serial.print("LEDTEST : ");
+      Serial.println(Firebase.getBool("Home1/board1/led/LED2"));
+    } else {
+      digitalWrite(led2, LOW);
+    }
+    u = clk * 100;
+    c3 = clk / 10;
+    c2 = (int)clk % 10;
+    c1 = u / 10 % 10;
+    c0 = u % 10;
+
+    u1 = t * 100;
+    t3 = t / 10;
+    t2 = (int)t % 10;
+    t1 = u1 / 10 % 10;
+    t0 = u1 % 10;
+
+    a3 = p_tm->tm_hour / 10;
+    a2 = p_tm->tm_hour % 10;
+    a1 = p_tm->tm_min / 10;
+    a0 = p_tm->tm_min % 10;
+    String clock = (String)a3 + (String)a2 + (String)a1 + (String)a0;
+    float ccc = clock.toFloat() / 100.0;
+    Serial.println("");
+    Serial.println(ccc);
+    Serial.println("");
+
+    if (isnan(h) || isnan(t)) {
+      Serial.println("NOT temp");
+      delay(100);
+      return;
+    }
+    Firebase.setFloat("Home1/board1/temperature", t);
+    Serial.print("tem = ");
+    Serial.println(t);
+    delay(200);
+    if (t >= 26) {
+      digitalWrite(LED0, HIGH);
+    } else {
+      digitalWrite(LED0, LOW);
+    }
+
+    if (k == true) {
+      lc.setDigit(0, 7, c3, false);
+      lc.setDigit(0, 6, c2, true);
+      lc.setDigit(0, 5, c1, false);
+      lc.setDigit(0, 4, c0, false);
+
+      lc.setDigit(0, 3, t3, false);
+      lc.setDigit(0, 2, t2, true);
+      lc.setDigit(0, 1, t1, false);
+      lc.setRow(0, 0, B00001101);
+    } else {
+      lc.setDigit(0, 7, a3, false);
+      lc.setDigit(0, 6, a2, true);
+      lc.setDigit(0, 5, a1, false);
+      lc.setDigit(0, 4, a0, false);
+
+      lc.setDigit(0, 3, t3, false);
+      lc.setDigit(0, 2, t2, true);
+      lc.setDigit(0, 1, t1, false);
+      lc.setRow(0, 0, B00001101);
+      Firebase.setFloat("Home1/board1/Clock/segment", ccc);
+    }
+  }
+
+  else if (user == "Home2" && pass == 2222) {
     digitalWrite(led1, LOW);
-  }
-  if (Firebase.getBool("Home1/board1/led/LED2") == true) {
-    digitalWrite(led2, HIGH);
-    Serial.print("LEDTEST : ");
-    Serial.println(Firebase.getBool("Home1/board1/led/LED2"));
-  }else{
     digitalWrite(led2, LOW);
-  }
-  u = clk * 100;
-  c3 = clk / 10;
-  c2 = (int)clk % 10;
-  c1 = u / 10 % 10;
-  c0 = u % 10;
+    bool led11 = Firebase.getBool("Home2/board1/led1");
+    bool led22 = Firebase.getBool("Home2/board1/led2");
+    if (led11 == true) {
+      digitalWrite(l2ed1, HIGH);
+      Serial.print("LEDTEST1 : ");
+      Serial.println(led11);
+    } else {
+      digitalWrite(l2ed1, LOW);
+    }
+    //==============================================
+    if (led22 == true) {
+      digitalWrite(l2ed2, HIGH);
+      Serial.print("LEDTEST2 : ");
+      Serial.println(led22);
+    } else {
+      digitalWrite(l2ed2, LOW);
+    }
+    lc.clearDisplay(0);
+  } else if (user == "Home3" && pass == 3333) {
+    digitalWrite(led1, LOW);
+    digitalWrite(led2, LOW);
+    digitalWrite(l2ed1, LOW);
+    digitalWrite(l2ed2, LOW);
+    String clk1 = Firebase.getString("Home3/board1/Clock/segment");
+    float clk = clk1.toFloat();
+    bool k = Firebase.getBool("Home3/board1/Clock/M");
+    Serial.print("Clock : ");
+    Serial.println(clk1);
+    Serial.println(clk);
 
-  u1 = t * 100;
-  t3 = t / 10;
-  t2 = (int)t % 10;
-  t1 = u1 / 10 % 10;
-  t0 = u1 % 10;
+    Serial.print(p_tm->tm_hour);
+    Serial.print(":");
+    Serial.print(p_tm->tm_min);
+    Serial.print(":");
+    Serial.print(p_tm->tm_sec);
+    Serial.println("");
 
-  a3 = p_tm->tm_hour / 10;
-  a2 = p_tm->tm_hour % 10;
-  a1 = p_tm->tm_min / 10;
-  a0 = p_tm->tm_min % 10;
-  String clock = (String)a3 + (String)a2 + (String)a1 + (String)a0;
-  float ccc = clock.toFloat() / 100.0;
-  Serial.println("");
-  Serial.println(ccc);
-  Serial.println("");
+    u = clk * 100;
+    c3 = clk / 10;
+    c2 = (int)clk % 10;
+    c1 = u / 10 % 10;
+    c0 = u % 10;
 
-  //  if (isnan(h) || isnan(t)) {
-  //    Serial.println(t);
-  //    delay(100);
-  //    return;
-  //  }
-  Firebase.setFloat("Home1/board1/temperature", t);
-  Serial.print("tem = ");
-  Serial.println(t);
-  delay(200);
-  if (t >= 26) {
-    digitalWrite(LED0, HIGH);
-  }
+    u1 = t * 100;
+    t3 = t / 10;
+    t2 = (int)t % 10;
+    t1 = u1 / 10 % 10;
+    t0 = u1 % 10;
 
-  if (k == true) {
-    lc.setDigit(0, 7, c3, false);
-    lc.setDigit(0, 6, c2, true);
-    lc.setDigit(0, 5, c1, false);
-    lc.setDigit(0, 4, c0, false);
+    a3 = p_tm->tm_hour / 10;
+    a2 = p_tm->tm_hour % 10;
+    a1 = p_tm->tm_min / 10;
+    a0 = p_tm->tm_min % 10;
+    String clock = (String)a3 + (String)a2 + (String)a1 + (String)a0;
+    float ccc = clock.toFloat() / 100.0;
+    Serial.println("");
+    Serial.println(ccc);
+    Serial.println("");
 
-    lc.setDigit(0, 3, t3, false);
-    lc.setDigit(0, 2, t2, true);
-    lc.setDigit(0, 1, t1, false);
-    lc.setRow(0, 0, B00001101);
+    if (isnan(h) || isnan(t)) {
+      Serial.println("NOT temp");
+      delay(100);
+      return;
+    }
+    Firebase.setFloat("Home3/board1/temperature", t);
+    Serial.print("tem = ");
+    Serial.println(t);
+    delay(200);
+    if (t >= 26) {
+      digitalWrite(LED0, HIGH);
+    } else {
+      digitalWrite(LED0, LOW);
+    }
+
+    if (k == true) {
+      lc.setDigit(0, 7, c3, false);
+      lc.setDigit(0, 6, c2, true);
+      lc.setDigit(0, 5, c1, false);
+      lc.setDigit(0, 4, c0, false);
+
+      lc.setDigit(0, 3, t3, false);
+      lc.setDigit(0, 2, t2, true);
+      lc.setDigit(0, 1, t1, false);
+      lc.setRow(0, 0, B00001101);
+    } else {
+      lc.setDigit(0, 7, a3, false);
+      lc.setDigit(0, 6, a2, true);
+      lc.setDigit(0, 5, a1, false);
+      lc.setDigit(0, 4, a0, false);
+
+      lc.setDigit(0, 3, t3, false);
+      lc.setDigit(0, 2, t2, true);
+      lc.setDigit(0, 1, t1, false);
+      lc.setRow(0, 0, B00001101);
+      Firebase.setFloat("Home3/board1/Clock/segment", ccc);
+    }
   } else {
-    lc.setDigit(0, 7, a3, false);
-    lc.setDigit(0, 6, a2, true);
-    lc.setDigit(0, 5, a1, false);
-    lc.setDigit(0, 4, a0, false);
-
-    lc.setDigit(0, 3, t3, false);
-    lc.setDigit(0, 2, t2, true);
-    lc.setDigit(0, 1, t1, false);
-    lc.setRow(0, 0, B00001101);
-    Firebase.setFloat("Home1/board1/Clock/segment", ccc);
+    lc.clearDisplay(0);
+    digitalWrite(led1, LOW);
+    digitalWrite(led2, LOW);
+    digitalWrite(l2ed1, LOW);
+    digitalWrite(l2ed2, LOW);
   }
 }
+
+

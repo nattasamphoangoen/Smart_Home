@@ -85,18 +85,30 @@ console.log(data['pass']);
         this.navCtrl.push(HomePage, {
             item: item
           });
+          const itemRef2 = this.db.object('usertest');
+          itemRef2.update({user:this.user});
+          itemRef2.update({pass:this.pass});
         }else if((this.user2 == this.user1 && this.pass1 == this.pass2)){
             this.navCtrl.push(HomePage2, {
                 item2: item2
               });
+          const itemRef2 = this.db.object('usertest');
+          itemRef2.update({user:this.user2});
+          itemRef2.update({pass:this.pass2});
         }else if((this.user3 == this.user1 && this.pass1 == this.pass3)){
           this.navCtrl.push(HomePage3, {
             item3: item3
           });
+          const itemRef2 = this.db.object('usertest');
+          itemRef2.update({user:this.user3});
+          itemRef2.update({pass:this.pass3});
         }else if((this.user4 == this.user1 && this.pass1 == this.pass4)){
           this.navCtrl.push(HomePage4, {
             item4: item4
           });
+          const itemRef2 = this.db.object('usertest');
+          itemRef2.update({user:this.user4});        
+          itemRef2.update({pass:this.pass4});
         }else{
             const alert = this.alertCtrl.create({
                 title: 'Please spare',
@@ -104,8 +116,12 @@ console.log(data['pass']);
                 buttons: ['OK']
               });
               alert.present();
+              const itemRef2 = this.db.object('usertest');
+              itemRef2.update({user:" "});        
+              itemRef2.update({pass:" "});
       }
     }
+
   }
   
   
